@@ -46,7 +46,16 @@ function addTask() {
 // Function to load tasks from localStorage
 function loadTasks() {
     const taskList = document.getElementById('todo-list');
-    const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+    let tasks = [];
+
+    try {
+        const stored = localStorage.getItem('tasks');
+        const parsed = stored ? JSON.parse(stored) : [];
+        tasks = Array.isArray(parsed) ? parsed : [];
+    } catch (e) {
+        console.error('Failed to parse tasks from localStorage:', e);
+        tasks = [];
+    }
 
     tasks.forEach(task => {
         const li = document.createElement('li');
